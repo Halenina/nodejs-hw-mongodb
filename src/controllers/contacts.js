@@ -5,6 +5,11 @@ import pasrePaginationParams from "../utils/parsePaginationParams.js"
 import parseSortParams from "../utils/parseSortParams.js";
 import { contactFieldList } from "../constants/index.js";
 import parseFilterParams from "../utils/parseFilterParams.js";
+import saveFileToCloudinary from "../utils/saveFileToCloudinary.js";
+import saveFileToPublicDir from "../utils/saveFileToPublicDir.js"
+import { env } from "../utils/env.js";
+
+const enable_cloudinary = env("ENABLE_CLOUDINARY");
 
 export const getAllContactsControllers =  async (req, res) => {
     const {_id: userId} = req.user;
@@ -49,7 +54,19 @@ export const getContactByIdController = async (req, res) => {
 
 export const addContactController = async (req, res) => {
   const {_id: userId} = req.user;
-    const data = await addContact({...req.body, userId});
+
+  let photo = ""
+
+  if(req.file) {
+    if(enable_cloudinary === "true") {
+        photo = await saveFileToCloudinary(req.file, "photos");
+    }
+    else {
+      photo = await saveFileToPublicDir(req.file, "photos");
+    }
+}
+
+    const data = await addContact({...req.body, userId, photo});
 
     res.status(201).json({
         status: 201,
@@ -59,14 +76,26 @@ export const addContactController = async (req, res) => {
 
 }
 
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res, next) => {
   const {_id: userId} = req.user;
   const { id } = req.params;
 
-  const data = await patchContact({_id: id, userId}, req.body);
+  let photo;
+
+  if(req.file) {
+    if(enable_cloudinary === "true") {
+        photo = await saveFileToCloudinary(req.file, "photos");
+    }
+    else {
+      photo = await saveFileToPublicDir(req.file, "photos");
+    }
+}
+
+  const data = await patchContact({_id: id, userId},{ ...req.body, photo});
 
   if (!data) {
-    throw createHttpError(404, "Contact not found")
+    next(createHttpError(404, "Contact not found"));
+    return;
   }
 
   res.status(200).json({
