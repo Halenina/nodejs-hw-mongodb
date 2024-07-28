@@ -1,13 +1,5 @@
-const calcPaginationData = ({total, page, perPage}) => {
-    const totalPages = Math.ceil((total/perPage))
-    const hasNextPages = page < totalPages;
-    const hasPreviousPages = page > 1;
-    
-    return {
-        totalPages,
-        hasNextPages,
-        hasPreviousPages,
-    }
-}
+import bcrypt from "bcrypt"
 
-export default calcPaginationData;
+export const hashValue = value => bcrypt.hash(value, 10);
+
+export const hashCompare = (value, hash) => bcrypt.compare( value, hash);
