@@ -18,13 +18,13 @@ export const getAllContactsControllers =  async (req, res) => {
     const {sortBy, sortOrder} = parseSortParams(query, contactFieldList)
     const filter = {...parseFilterParams(query),userId}
 
-    const contacts = await getAllContacts({
-      page,
-      perPage,
-      sortBy,
-      sortOrder,
-      filter,
-    });
+   const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
 
     res.status(200).json({
         status: 200,
@@ -55,14 +55,15 @@ export const getContactByIdController = async (req, res) => {
 export const addContactController = async (req, res) => {
   const {_id: userId} = req.user;
 
-  let photo = ""
+  const photo = req.file;
 
-  if(req.file) {
-    if(enable_cloudinary === "true") {
-        photo = await saveFileToCloudinary(req.file, "photos");
-    }
-    else {
-      photo = await saveFileToPublicDir(req.file, "photos");
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
     }
 }
 
@@ -80,14 +81,15 @@ export const patchContactController = async (req, res, next) => {
   const {_id: userId} = req.user;
   const { id } = req.params;
 
-  let photo;
+  const photo = req.file;
 
-  if(req.file) {
-    if(enable_cloudinary === "true") {
-        photo = await saveFileToCloudinary(req.file, "photos");
-    }
-    else {
-      photo = await saveFileToPublicDir(req.file, "photos");
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
     }
 }
 
