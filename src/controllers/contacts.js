@@ -6,7 +6,7 @@ import parseSortParams from "../utils/parseSortParams.js";
 import { contactFieldList } from "../constants/index.js";
 import parseFilterParams from "../utils/parseFilterParams.js";
 import saveFileToCloudinary from "../utils/saveFileToCloudinary.js";
-import saveFileToPublicDir from "../utils/saveFileToPublicDir.js"
+import saveFileToPublicDir from "../utils/saveFileToPublicDir.js";
 import { env } from "../utils/env.js";
 
 const enable_cloudinary = env("ENABLE_CLOUDINARY");
@@ -63,7 +63,7 @@ export const addContactController = async (req, res) => {
     if (env('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
     } else {
-      photoUrl = await saveFileToUploadDir(photo);
+      photoUrl = await saveFileToPublicDir(photo);
     }
 }
 
@@ -89,7 +89,7 @@ export const patchContactController = async (req, res, next) => {
     if (env('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
     } else {
-      photoUrl = await saveFileToUploadDir(photo);
+      photoUrl = await saveFileToPublicDir(photo);
     }
 }
 
