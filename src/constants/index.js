@@ -29,5 +29,5 @@ export const SMTP = {
   
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
-export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
-
+export const PUBLIC_DIR = path.join(process.cwd(), 'public');
+export const POSTER_DIR = path.join(process.cwd(), "src", "public", "photo");
