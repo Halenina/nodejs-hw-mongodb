@@ -12,3 +12,4 @@ export const saveFileToPublicDir = async (file) => {
 
   return `${env('APP_DOMAIN')}/uploads/${file.filename}`;
 };
+export default saveFileToPublicDir;
