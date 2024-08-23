@@ -55,7 +55,7 @@ export const getContactByIdController = async (req, res) => {
 export const addContactController = async (req, res) => {
   const {_id: userId} = req.user;
 
-  const photo = req.file;
+   const photo = req.file;
 
   let photoUrl;
 
@@ -63,7 +63,7 @@ export const addContactController = async (req, res) => {
     if (env('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
     } else {
-      photoUrl = await saveFileToPublicDir(photo);
+      photoUrl = await saveFileToUploadDir(photo);
     }
 }
 
@@ -81,7 +81,7 @@ export const patchContactController = async (req, res, next) => {
   const {_id: userId} = req.user;
   const { id } = req.params;
 
-  const photo = req.file;
+   const photo = req.file;
 
   let photoUrl;
 
@@ -89,7 +89,7 @@ export const patchContactController = async (req, res, next) => {
     if (env('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
     } else {
-      photoUrl = await saveFileToPublicDir(photo);
+      photoUrl = await saveFileToUploadDir(photo);
     }
 }
 

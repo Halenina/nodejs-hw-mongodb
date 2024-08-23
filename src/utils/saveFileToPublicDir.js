@@ -1,13 +1,14 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
-import { PUBLIC_DIR } from "../constants/index.js";
+import { TEMP_UPLOAD_DIR, UPLOAD_DIR } from '../constants/index.js';
+import { env } from './env.js';
 
-const saveFileToPublicDir = async (file, filePath) => {
-    const newPath = path.resolve(PUBLIC_DIR, filePath, file.filename);
-    await fs.rename(file.path, newPath);
+export const saveFileToUploadDir = async (file) => {
+  await fs.rename(
+    path.join(TEMP_UPLOAD_DIR, file.filename),
+    path.join(UPLOAD_DIR, file.filename),
+  );
 
-    return `/${filePath}/${file.filename}`;
+  return `${env('APP_DOMAIN')}/uploads/${file.filename}`;
 };
-
-export default saveFileToPublicDir;
