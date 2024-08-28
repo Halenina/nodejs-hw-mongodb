@@ -122,5 +122,3 @@ export const deleteContactByIdController = async (req, res) => {
   })
 
 }
-
-}
