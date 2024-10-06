@@ -2,7 +2,7 @@ import Session from "../db/models/Session.js";
 import User from "../db/models/User.js";
 import { hashValue } from "../utils/hash.js";
 import jwt from 'jsonwebtoken';
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"
 
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
@@ -17,7 +17,7 @@ export const findUser = filter => User.findOne(filter);
 
 export const register = async (data) => {
     const {password} = data;
-  const hashPassword = await hashValue(password);
+    const hashPassword = await hashValue(password)
    return User.create({...data, password: hashPassword});
 }
 
